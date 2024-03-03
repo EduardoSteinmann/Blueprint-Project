@@ -6,13 +6,15 @@ class Player:
         image = pygame.image.load(sprite_path)
         self.position = position
         self.sprite = image
-        self.bounding_box = image.get_rect()
+        self.bounding_box = image.get_rect().move(position[0], position[1])
         self.is_performing_action = False
         self.range = common.METER
         self.teleport_cooldown = 0
         self.falling = True 
-        self.velocity = (0, 0)
+        self.velocity = [0, 0]
         self.move_keys = move_keys
+        #self.moving_left = False
+        #self.moving_right = False
         
     def get_position(self) -> int:
         return self.position
@@ -59,4 +61,10 @@ class Player:
             self.velocity = (0, self.velocity[1])
     
     def set_x_vel(self, new_x):
-        self.velocity = [new_x, self.velocity[1]]
+        self.velocity = (new_x, self.velocity[1])
+    
+    def set_y_vel(self, new_y):
+        self.velocity = (self.velocity[0], new_y)
+
+    def teleport(self, player2):
+        self.move((player2.position[0] - self.position[0], player2.position[1] - self.position[1]))
