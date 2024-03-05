@@ -103,8 +103,6 @@ class Game:
         return round(time.time() * 1000)
 
     def game_loop(self):
-        if self.check_win():
-            self.quit()
         self.is_running = True
         while self.is_running:
             for event in pg.event.get():
@@ -141,6 +139,8 @@ class Game:
             for platform in self.platforms:
                 platform.update_position(self.delta_time)
             self.clock.tick(FPS)
+            if self.check_win():
+                self.quit()
 
     def display_players(self):
         for player in self.players:
@@ -194,8 +194,11 @@ class Game:
         ]
     
     def check_win(self):
+        # print("In win func")
         for player in self.players:
-            if player.position[0] > WINDOW_WIDTH and player.position[1] > WINDOW_HEIGHT - self.elevator.get_rect()[3]:
+            if player.position[0] > WINDOW_WIDTH:
+                # print("Yipee")
+                self.is_running = False
                 return True
         return False
     
